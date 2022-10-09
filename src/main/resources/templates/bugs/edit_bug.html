@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link rel="stylesheet" th:href="@{/css/formatting.css}">
+    <!--	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+
+</head>
+<body>
+<nav  class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#"> Project IO</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{/home/}">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/users/}">Users</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/roles/}">Roles</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/bug/}">Bugs</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/platforms/}">Platforms</a>
+            </li>
+
+        </ul>
+    </div>
+</nav>
+
+
+  <div class="container">
+      <div class="row">
+          <div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
+              <h1 class="text-center">
+                  Update Bug
+              </h1>
+              <div class="card-body">
+                  <form th:action="@{/bug/{id} (id=${bug.bugId})}" th:object="${bug}" method="POST">
+                      <div class="form-group">
+                          <label>UserName</label>
+                          <input class="form-control" type="text" name="BugName" th:field="${bug.label}"
+                                 placeholder="Enter email" />
+                      </div>
+
+                      <div class="form-group">
+                          <label>UserName</label>
+                          <input class="form-control" name="BugComplaint" placeholder="Please state your complaint" th:field="${bug.bugReview}"
+                                 type="text"/>
+                      </div>
+
+                      <div class=" form-group">
+                          <label>Severity</label>
+                          <select th:field="${bug.severity}">
+                              <option th:value="LOW">LOW</option>
+                              <option th:value="MEDIUM">MEDIUM</option>
+                              <option th:value="HIGH">HIGH</option>
+                          </select>
+                      </div>
+
+
+
+
+                       <div class=" form-group">
+                          <label>Bug Treatment Stage</label>
+                           <select th:field="${bug.bugTreatmentStage}">
+                               <option th:value="OPEN">OPEN</option>
+                               <option th:value="PENDING">PENDING</option>
+                               <option th:value="CLOSED">CLOSED</option>
+                           </select>
+                       </div>
+
+
+<!--                        <div class=" form-group">-->
+<!--                          <label>PROGRESS STATUS</label>-->
+<!--                           <select th:field="${bug.progressStatus}">-->
+<!--                               <option th:value="APPROVED">APPROVED</option>-->
+<!--                               <option th:value="ASSIGNED">ASSIGNED</option>-->
+<!--                               <option th:value="REASSIGNED">REASSIGNED</option>-->
+<!--                               <option th:value="COMPLETED">COMPLETED</option>-->
+<!--                           </select>-->
+<!--                       </div>-->
+
+
+<!--                      <div class="form-group row">-->
+<!--                          <label class="col-sm-4 col-form-label">Platform:</label>-->
+<!--                          <div class="col-sm-8">-->
+<!--                              <select th:field ="${bug.platformses}" multiple="multiple"    style="width: 100%">-->
+<!--                                  <option th:each="platform: ${allPlatforms}"-->
+<!--                                          th:value="${platform.platformId}"-->
+<!--                                          th:text="${platform.platformName}"></option>-->
+<!--                              </select>-->
+<!--                          </div>-->
+<!--                      </div>-->
+
+
+                      <div class="form-group row">
+                          <label class="col-sm-4 col-form-label">Developers:</label>
+                          <div class="col-sm-8">
+                              <select th:field ="${bug.userAssignedToBug}"     style="width: 100%">
+                                  <option th:each="developer: ${developers}"
+                                          th:value="${developer.id}"
+                                          th:text="${developer.firstName}"></option>
+                              </select>
+                          </div>
+                      </div>
+
+
+
+
+
+                      <br>
+                      <div class="box-footer">
+                          <button type="submit" class="btn btn-primary">Update</button>
+                      </div>
+
+                  </form>
+              </div>
+          </div>
+      </div>
+  </div>
+</body>
+</html>

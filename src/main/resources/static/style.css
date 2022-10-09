@@ -1,0 +1,13 @@
+*.icon-white {color:white}
+*.icon-silver {color:silver}
+*.icon-green {color:green}
+*.icon-dark {color:gray}
+
+*.center-div{
+    display: flex;
+    /* justify-items: center; */
+    justify-content: space-evenly;}
+
+.css-serial {
+    counter-reset: serial-number; /* Set the serial number counter to 0 */
+}

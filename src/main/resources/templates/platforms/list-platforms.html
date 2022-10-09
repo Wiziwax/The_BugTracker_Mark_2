@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" type="text/css"/>
+    <link rel="stylesheet" th:href="@{/fontawesome/all.css}" type="text/css"/>
+    <link rel="stylesheet" th:href="@{/style.css}" type="text/css"/>
+    <link rel="stylesheet" th:href="@{/css/formatting.css}">
+    <script th:src="@{/webjars/jquery/jquery.min.js}" type="text/javascript"></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
+
+</head>
+<body>
+
+<nav  class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#"> Project IO</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{/home/}">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/users/}">Users</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/roles/}">Roles</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/bug/}">Bugs</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/platforms/}">Platforms</a>
+            </li>
+
+        </ul>
+    </div>
+</nav>
+    <h1>LIST PLATFORM PAGE</h1>
+
+
+
+    <div class="container">
+    <hr>
+
+    <!--  Add New Platform Button -->
+    <a th:href="@{/platforms/new}"
+       class="btn btn-primary btn-sm mb-3"> 
+        Add Platform 
+    </a> 
+    <br></br>
+
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Action</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="aPlatform : ${platforms}">
+            <td th:text="${aPlatform.platformId}"/>
+            <td th:text="${aPlatform.platformName}"/>
+            <td >
+                <a class="fas fa-edit fa-2x icon-green"
+                   th:href="@{/platforms/edit/{id}(id=${aPlatform.platformId})}"
+                   title="Edit this user"></a>
+                &nbsp
+            </td>
+
+        </tr>
+        </tbody>
+
+    </table>
+</div>
+</body>
+</html>
