@@ -5,15 +5,13 @@ import com.example.the_bugtracker_mark_2.Services.ActivityService;
 import com.example.the_bugtracker_mark_2.Models.Activity;
 import com.example.the_bugtracker_mark_2.Services.BugService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/activity")
+@CrossOrigin(origins = "http://10.128.32.201:4200")
 public class ActivityRestController {
 
     @Autowired

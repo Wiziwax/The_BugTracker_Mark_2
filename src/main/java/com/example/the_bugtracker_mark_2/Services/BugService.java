@@ -3,10 +3,7 @@ package com.example.the_bugtracker_mark_2.Services;
 import com.example.the_bugtracker_mark_2.Configs.ValueNotFoundException;
 import com.example.the_bugtracker_mark_2.Enums.Action;
 import com.example.the_bugtracker_mark_2.Enums.Severity;
-import com.example.the_bugtracker_mark_2.Models.Activity;
-import com.example.the_bugtracker_mark_2.Models.Bug;
-import com.example.the_bugtracker_mark_2.Models.Platforms;
-import com.example.the_bugtracker_mark_2.Models.User;
+import com.example.the_bugtracker_mark_2.Models.*;
 import com.example.the_bugtracker_mark_2.Repositories.ActivityRepository;
 import com.example.the_bugtracker_mark_2.Repositories.BugRepository;
 import com.example.the_bugtracker_mark_2.Repositories.UserRepository;
@@ -22,6 +19,7 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -35,6 +33,9 @@ public class BugService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    ActivityService activityService;
 
 
     //LIST ALL BUGS
@@ -73,7 +74,7 @@ public class BugService {
     }
 
     public List<Bug> listAssignedBugs(){
-        return bugRepository.findBugByAssignedTrue();
+        return bugRepository.getBugByUserAssignedToBugIsNotNull();
     }
 
 //    public String getSignedInUsername(
@@ -159,26 +160,18 @@ public class BugService {
     @Transactional
     public void updateBugRestController(
             Integer bugId,
-            String bugName,
-            String severity,
-            String bugReview,
             String treatmentStage,
-            Platforms platforms,
-            String progressStatus,
             User userAssignedToBug,
             Severity enumSeverity){
 
         Bug existingBug =
                 bugRepository.findById(bugId).orElseThrow(()->new IllegalStateException(
-                        "student with id " + bugId + " does not exist"));
+                        "bug with id " + bugId + " does not exist"));
 
-        existingBug.setLabel(bugName);
-        existingBug.setSeverity(severity);
-        existingBug.setBugReview(bugReview);
+
         existingBug.setBugTreatmentStage(treatmentStage);
         existingBug.setLastUpdate(LocalDate.now());
-        existingBug.setPlatformses(platforms);
-        existingBug.setProgressStatus(progressStatus);
+        existingBug.setAssigned(true);
         existingBug.setUserAssignedToBug(userAssignedToBug);
         existingBug.setAssignedDate(String.valueOf(LocalDate.now()));
         existingBug.setEnumSeverity(enumSeverity);
@@ -195,4 +188,9 @@ public class BugService {
     public void updateAssignmentStatus(Integer id, boolean assigned) {
         bugRepository.updateAssignmentStatus(id, assigned);
     }
+
+    public List<Bug> bugsSubmittedByUser(Integer userId){
+        return bugRepository.theBugsSubmittedByAUser(userId);
+    }
+
 }

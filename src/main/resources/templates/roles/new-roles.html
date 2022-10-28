@@ -53,7 +53,7 @@
 
 
 <div class="container">
-    <form action="/roles/save" th:object="${role}" method="POST">
+    <form th:action="@{/roles/save}" th:object="${role}" method="POST">
         <input type="text" placeholder="Name" th:field="${role.name}">
 
         <button type="submit">Create Role</button>

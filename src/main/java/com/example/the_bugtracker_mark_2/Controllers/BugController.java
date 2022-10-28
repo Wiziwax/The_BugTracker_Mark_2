@@ -1,19 +1,16 @@
 package com.example.the_bugtracker_mark_2.Controllers;
 
-
+import com.example.the_bugtracker_mark_2.Configs.SecurityUser;
 import com.example.the_bugtracker_mark_2.Configs.ValueNotFoundException;
 import com.example.the_bugtracker_mark_2.Enums.Action;
-import com.example.the_bugtracker_mark_2.Models.Activity;
-import com.example.the_bugtracker_mark_2.Models.Bug;
-import com.example.the_bugtracker_mark_2.Models.Platforms;
-import com.example.the_bugtracker_mark_2.Models.User;
+import com.example.the_bugtracker_mark_2.Models.*;
 import com.example.the_bugtracker_mark_2.Repositories.ActivityRepository;
 import com.example.the_bugtracker_mark_2.Repositories.UserRepository;
-import com.example.the_bugtracker_mark_2.Services.ActivityService;
-import com.example.the_bugtracker_mark_2.Services.BugService;
-import com.example.the_bugtracker_mark_2.Services.PlatformService;
-import com.example.the_bugtracker_mark_2.Services.UserService;
+import com.example.the_bugtracker_mark_2.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
+
+
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +23,6 @@ import java.util.List;
 @RequestMapping("bug")
 public class BugController {
 
-
     @Autowired
     BugService bugService;
 
@@ -37,6 +33,7 @@ public class BugController {
     UserService userService;
     @Autowired
     PlatformService platformService;
+
     @Autowired
     ActivityService activityService;
     @Autowired
@@ -72,17 +69,19 @@ public class BugController {
     public String newBugForm(Model model) {
         Bug aBug = new Bug();
         List<Platforms> allPlatforms = platformService.platformsList();//Create API
+
+
         model.addAttribute("allPlatforms", allPlatforms);
         model.addAttribute("bug", aBug);
         return "bugs/new-bugs";
     }
 
     @PostMapping("/save")
-    public String createBug(Bug bug){
-//                            @AuthenticationPrincipal SecurityUser userDetails){
-//        String userEmail=userDetails.getUsername();
-//        User user = userRepository.getByEmail(userEmail);
-//        bug.setCreatedBy(user.getFirstName()+ " " + user.getLastName());
+    public String createBug(Bug bug,
+                            @AuthenticationPrincipal SecurityUser userDetails){
+        String userEmail=userDetails.getUsername();
+        User user = userRepository.getByEmail(userEmail);
+        bug.setCreatedBy(user.getId());
         bugService.create(bug);
         return "redirect:/bug/";
     }
@@ -93,6 +92,7 @@ public class BugController {
         Bug existingBug = bugService.get(id);
         List<Platforms> platformsList = platformService.platformsList();
         List<User> listUserByRole = userService.getUserByRoleId(2);
+
         model.addAttribute("developers", listUserByRole);
         model.addAttribute("allPlatforms", platformsList);
         model.addAttribute("bug", existingBug);
@@ -102,7 +102,7 @@ public class BugController {
     @PostMapping("{id}")
     public String updateBug(@PathVariable Integer id,
                             @ModelAttribute("bug") Bug bug
-//                            ,@AuthenticationPrincipal SecurityUser userDetails
+                            ,@AuthenticationPrincipal SecurityUser userDetails
     ) throws ValueNotFoundException {
 
 
@@ -113,9 +113,7 @@ public class BugController {
         existingBug.setLastUpdate(LocalDate.now());
         existingBug.setProgressStatus(bug.getProgressStatus());
         existingBug.setAssignedDate(String.valueOf(LocalDate.now()));
-        existingBug.setUserAssignedToBug(assignmentResolution(bug, existingBug
-//                userDetails
-        ));
+        existingBug.setUserAssignedToBug(assignmentResolution(bug, existingBug, userDetails));
         existingBug.setAssigned(true);
         bugService.updateBug(existingBug);
         return "redirect:/bug/";
@@ -128,7 +126,6 @@ public class BugController {
     @GetMapping("delete/{id}")
     public String deleteBug(@PathVariable Integer id) throws ValueNotFoundException {
         bugService.deleteBug(id);
-
         return "redirect:/bug";
     }
 
@@ -136,15 +133,15 @@ public class BugController {
 
     ///////////////////////////////////CONTROLLER UTILITY METHODS/////////////////////////////////////////
 
-    public User assignmentResolution(Bug bug, Bug existingBug
-//                                     SecurityUser userDetails
+    public User assignmentResolution(Bug bug, Bug existingBug,
+                                     SecurityUser userDetails
     ) {
 
         User assignedUser = null;
 
         if (existingBug.userAssignedToBug == null && existingBug.isAssigned()==false) {
-            assignedUser = bugAssignment(bug, existingBug
-//                    , userDetails
+            assignedUser = bugAssignment(bug, existingBug,
+                     userDetails
             );
             existingBug.setAssigned(true);
         }
@@ -154,29 +151,23 @@ public class BugController {
             existingBug.setAssigned(false);
             System.out.println("Sent to admin for approval");
         }
-
-
-
-
-
         return assignedUser;
     }
 
-    public User bugAssignment(Bug bug, Bug existingBug
-//            ,  SecurityUser userDetails
+    public User bugAssignment(Bug bug, Bug existingBug,
+              SecurityUser userDetails
     ) {
 
-//        String userFullName=userDetails.getFullName();
+        String userFullName=userDetails.getFullName();
         existingBug.setUserAssignedToBug(bug.getUserAssignedToBug());
         String assignedTo = String.valueOf(bug.getUserAssignedToBug());
         Activity assignmentActivity = new Activity(
-                existingBug.getCreatedBy(),
+                bug.getCreatedBy(),
                 bug.getReportDate(),
                 null,
                 String.format("Bug %s created by %s was assigned to %s ",
-                        bug.getLabel(), existingBug.getCreatedBy(), bug.userAssignedToBug)
-//                userFullName,
-                ,null,
+                        bug.getLabel(), existingBug.getCreatedBy(), bug.userAssignedToBug),
+                userFullName,
                 assignedTo,
                 bug.getBugTreatmentStage(),
                 new Date()
@@ -201,24 +192,24 @@ public class BugController {
 
     @PostMapping("reassignment/{id}")
     public String submitBugReassignment(@PathVariable Integer id,
-                            @ModelAttribute("bug") Bug bug
-//                            ,@AuthenticationPrincipal SecurityUser userDetails
+                            @ModelAttribute("bug") Bug bug,
+                            @AuthenticationPrincipal SecurityUser userDetails
     ) throws ValueNotFoundException {
 
         Bug existingBug = bugService.get(id);
+        String userFullName=userDetails.getFullName();
         existingBug.setUserAssignedToBug(bug.getUserAssignedToBug());
         existingBug.setAssigned(true);
         bugService.updateBug(existingBug);
-        ///SAVE REASSIGNMENT ACTIVITY
+//        /SAVE REASSIGNMENT ACTIVITY
         Activity reassignmentActivity = new Activity(
-                existingBug.getCreatedBy(),
+                bug.getCreatedBy(),
                 bug.getReportDate(),
                 "Initially assigned to " + existingBug.userAssignedToBug,
                 String.format("Bug %s created by %s was reassigned to %s ", bug.getLabel(),
                         existingBug.getCreatedBy(), bug.userAssignedToBug),
                 new Date(),
-//                userFullName,
-                null,
+                userFullName,
                 String.valueOf(bug.userAssignedToBug)
         );
         reassignmentActivity.setBugActivity(existingBug);
@@ -237,3 +228,21 @@ public class BugController {
         return "bugs/reassignment_form";
     }
         }
+
+
+
+
+//
+//    @GetMapping("checkifuserexists")
+//    public boolean checkIfExists(@RequestBody User user){
+//        User usernameExists = userRepository.findByEmail(user.getEmail());
+//        User userPassword = userRepository.findByPassword(user.getPassword());
+//        System.out.println(usernameExists);
+//        System.out.println(userPassword);
+//
+//
+//        if(usernameExists.getId()==userPassword.getId()){
+//            return true;
+//        }
+//        return false;
+//    }

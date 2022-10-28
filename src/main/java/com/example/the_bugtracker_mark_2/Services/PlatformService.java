@@ -1,23 +1,19 @@
 package com.example.the_bugtracker_mark_2.Services;
 
 
-import com.example.the_bugtracker_mark_2.Enums.PlatformStatus;
-import com.example.the_bugtracker_mark_2.Enums.Severity;
-import com.example.the_bugtracker_mark_2.Models.Bug;
-import com.example.the_bugtracker_mark_2.Models.Platforms;
-import com.example.the_bugtracker_mark_2.Models.User;
-import com.example.the_bugtracker_mark_2.Repositories.PlatformsRepository;
 import com.example.the_bugtracker_mark_2.Configs.ValueNotFoundException;
+import com.example.the_bugtracker_mark_2.DTO.PlatformDTO;
+import com.example.the_bugtracker_mark_2.Enums.PlatformStatus;
+import com.example.the_bugtracker_mark_2.Models.Platforms;
+import com.example.the_bugtracker_mark_2.Repositories.PlatformsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
-@Transactional
 public class PlatformService {
 
     @Autowired
@@ -29,12 +25,10 @@ public class PlatformService {
         return platformsRepository.findAll();
     }
 
-
     //List only available platforms
     public List<Platforms> availablePlatformsList(){
         return platformsRepository.activePlatformsList();
     }
-
 
     public List<Platforms> deactivatedPlatformsList(){
         return platformsRepository.deactivatedPlatforms();
@@ -45,11 +39,10 @@ public class PlatformService {
     }
 
 
-
-
-    public Platforms create(Platforms platforms) {
-        platformsRepository.save(platforms);
-        return platforms;
+    public Platforms create(Platforms platform) {
+        Platforms platforms1=new Platforms();
+        platformsRepository.save(platform);
+        return platforms1;
     }
 
 

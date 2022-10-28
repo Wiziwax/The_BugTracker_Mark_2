@@ -25,14 +25,8 @@ public class UserSignupController {
     @Autowired
     RoleRepository roleRepository;
 
-    @Autowired
-    UserRepository userRepository;
 
-//    @Autowired
-//    BugRepository bugRepository;
-//
-//    @Autowired
-//    BugService bugService;
+
 
 
     @GetMapping("new")
@@ -40,6 +34,7 @@ public class UserSignupController {
 
         User aUser = new User();
         List<Role> roleList = roleRepository.findAll();
+        Role role = roleList.get(2);
         model.addAttribute("allRoles", roleList);
         model.addAttribute("user", aUser);
         return "users/new-users";
@@ -47,9 +42,8 @@ public class UserSignupController {
     }
 
     @PostMapping("save")
-    public String createUserForm(User user, Model model) {
+    public String createUserForm(User user) {
         userService.save(user);
-        //Use a redirect to prevent duplicate submissions
         return "redirect:/users/";
     }
 }

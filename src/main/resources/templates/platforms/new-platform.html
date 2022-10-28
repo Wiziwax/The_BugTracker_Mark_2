@@ -53,10 +53,9 @@
 
 
 <div class="container">
-    <form action="/platforms/saved" th:object="${platform}" method="POST">
+    <form
+            th:action="@{/platforms/platformsave}" th:object="${platform}" method="post">
         <input type="text" placeholder="Name" th:field="${platform.platformName}">
-<!--        <input type="text" placeholder="Description" th:field="${role.description}">-->
-<!--        <input type="text" placeholder="Email" th:field="${employee.email}">-->
 
         <button type="submit">Create Platform</button>
     </form>

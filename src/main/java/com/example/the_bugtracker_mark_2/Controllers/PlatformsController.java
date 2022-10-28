@@ -1,6 +1,7 @@
 package com.example.the_bugtracker_mark_2.Controllers;
 
 import com.example.the_bugtracker_mark_2.Configs.ValueNotFoundException;
+import com.example.the_bugtracker_mark_2.DTO.PlatformDTO;
 import com.example.the_bugtracker_mark_2.Models.Platforms;
 import com.example.the_bugtracker_mark_2.Repositories.PlatformsRepository;
 import com.example.the_bugtracker_mark_2.Services.PlatformService;
@@ -17,8 +18,6 @@ public class PlatformsController {
 
     @Autowired
     PlatformService platformService;
-
-
     @Autowired
     PlatformsRepository platformsRepository;
 
@@ -39,11 +38,13 @@ public class PlatformsController {
         return "platforms/new-platform";
     }
 
-    @PostMapping("saved")
-    public String createPlatform(Platforms platform, Model model) {
+    @PostMapping("/platformsave")
+    public String createPlatform(Platforms platform) {
         platformService.create(platform);
         return "redirect:/platforms/";
     }
+
+
 
     @PostMapping("{id}")
     public String updatePlatform(@PathVariable Integer id,
@@ -57,7 +58,7 @@ public class PlatformsController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteUsers(@PathVariable Integer id) throws ValueNotFoundException {
+    public String deletePlatforms(@PathVariable Integer id) throws ValueNotFoundException {
         platformService.deletePlatform(id);
         return "redirect:/platforms";
     }

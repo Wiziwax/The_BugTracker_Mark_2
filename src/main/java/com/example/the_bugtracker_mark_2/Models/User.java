@@ -28,7 +28,15 @@ public class User {
     @Column(length = 64)
     private String photos;
 
+    @Column
     private boolean enabled;
+
+    @OneToOne
+    @JoinColumn(name = "user_team_id")
+    private Teams userTeam;
+
+    @Column(name = "reset_password_token")
+    private String resetPasswordToken;
 
 
 
@@ -127,15 +135,6 @@ public class User {
     private Role roles;
 
 
-
-//    public Bug getBugForUser() {
-//        return bugForUser;
-//    }
-//
-//    public void setBugForUser(Bug bugForUser) {
-//        this.bugForUser = bugForUser;
-//    }
-
     public Role getRoles() {
         return roles;
     }
@@ -143,31 +142,6 @@ public class User {
     public void setRoles(Role roles) {
         this.roles = roles;
     }
-
-//    @ManyToMany(fetch = FetchType.EAGER)//You wouldn't be able to sign in without this attribute
-//    @JoinTable(
-//            name = "users_roles",
-//            joinColumns = @JoinColumn(name = "user_id"),
-//            inverseJoinColumns = @JoinColumn(name = "role_id")
-//    )
-//    @Column
-//    private List<Role> roles;
-
-
-
-//    @Column(nullable = false)
-//    public List<Role> getRoles() {
-//        return roles;
-//    }
-//
-//
-//    public void setRoles(List<Role> roles) {
-//        this.roles = roles;
-//    }
-
-//
-//    public void addRoles(Role role) {
-//        this.roles.add(role);
 
     public User(String email, String firstName, String lastName) {
         this.email = email;
@@ -188,6 +162,22 @@ public class User {
 
     }
 
+    public Teams getUserTeam() {
+        return userTeam;
+    }
+
+    public void setUserTeam(Teams userTeam) {
+        this.userTeam = userTeam;
+    }
+
+    public String getResetPasswordToken() {
+        return resetPasswordToken;
+    }
+
+    public void setResetPasswordToken(String resetPasswordToken) {
+        this.resetPasswordToken = resetPasswordToken;
+    }
+
     @Override
     public String toString() {
         return firstName;
@@ -202,21 +192,7 @@ public class User {
         return "/user-photos/" + this.id + "/" + this.photos;
     }
 
-//    public List<Bug> getBugToWhichUserWasAssigned() {
-//        return bugToWhichUserWasAssigned;
-//    }
-//
-//    public void setBugToWhichUserWasAssigned(List<Bug> bugToWhichUserWasAssigned) {
-//        this.bugToWhichUserWasAssigned = bugToWhichUserWasAssigned;
-//    }
 
-//    public List<Role> getRoles() {
-//        return roles;
-//    }
-//
-//    public void setRoles(List<Role> roles) {
-//        this.roles = roles;
-//    }
 }
 
 

@@ -4,6 +4,7 @@ package com.example.the_bugtracker_mark_2.RestControllers;
 import com.example.the_bugtracker_mark_2.Models.Bug;
 import com.example.the_bugtracker_mark_2.Models.Platforms;
 import com.example.the_bugtracker_mark_2.Configs.ValueNotFoundException;
+import com.example.the_bugtracker_mark_2.Repositories.PlatformsRepository;
 import com.example.the_bugtracker_mark_2.Services.PlatformService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -13,11 +14,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/platforms")
-@CrossOrigin(origins = "http://10.128.32.141:4200")
+@CrossOrigin(origins = "http://10.128.32.201:4200")
 public class PlatformsRestController {
 
     @Autowired
     PlatformService platformService;
+
+    @Autowired
+    PlatformsRepository platformsRepository;
 
     @GetMapping("")
     public List<Platforms> displayPlatforms(){
@@ -27,7 +31,7 @@ public class PlatformsRestController {
     @GetMapping("activeplatforms")
     public List<Platforms> activePlatforms() {return platformService.availablePlatformsList();}
 
-    @GetMapping("deactivedplatforms")
+    @GetMapping("deactivatedplatforms")
     public List<Platforms> deactivatedPlatforms() {return platformService.deactivatedPlatformsList();}
 
     @GetMapping("platformsundertreatment")
@@ -42,8 +46,8 @@ public class PlatformsRestController {
     }
 
     @PostMapping("save")
-    public Platforms createPlatform(Platforms platform, Model model){
-        return platformService.create(platform);
+    public Platforms createPlatform(Platforms platform){
+        return platformsRepository.save(platform);
     }
 
     @PostMapping("{id}")

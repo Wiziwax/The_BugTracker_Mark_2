@@ -19,7 +19,7 @@ public class Activity {
     public Integer activityId;
 
     @Column
-    public String createdBy;//User who sent the complaint
+    public Integer createdBy;//User who sent the complaint
 
     @Column(name = "bug_action")
     public Action action;
@@ -75,7 +75,8 @@ public class Activity {
     //GETTERS AND SETTERS
 
     //FOR BUG CREATION
-    public Activity(String description, String createdBy, LocalDate createdDt, String approvedBy,
+    public Activity(String description, Integer createdBy, LocalDate createdDt,
+                    String approvedBy,
                     Date actionDate, String assignedTo, String bugTicketId, String treatmentStage, String progressStatus) {
         this.description=description;
         this.createdBy = createdBy;
@@ -99,12 +100,13 @@ public class Activity {
     //FOR BUG UPDATE/ASSIGNMENT
 
 
-    public Activity(String createdBy,
+    public Activity(Integer createdBy,
                     LocalDate createdDate,
                     String reassignedTo,
                     String description,
                     String approvedBy,
-                    String assignedTo, String treatmentStage,
+                    String assignedTo,
+                    String treatmentStage,
                     Date actionDate) {
 
         this.createdBy=createdBy;
@@ -119,9 +121,12 @@ public class Activity {
 
     //FOR REASSIGNMENT
 
-    public Activity(String createdBy, LocalDate createdDt,
-                    String assignedTo, String description,
-                    Date actionDate, String reassignedBy,
+    public Activity(Integer createdBy,
+                    LocalDate createdDt,
+                    String assignedTo,
+                    String description,
+                    Date actionDate,
+                    String reassignedBy,
                     String reassignedTo) {
         this.createdBy = createdBy;
         this.createdDt = createdDt;
@@ -140,11 +145,11 @@ public class Activity {
         this.activityId = activityId;
     }
 
-    public String getCreatedBy() {
+    public Integer getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(String createdBy) {
+    public void setCreatedBy(Integer createdBy) {
         this.createdBy = createdBy;
     }
 

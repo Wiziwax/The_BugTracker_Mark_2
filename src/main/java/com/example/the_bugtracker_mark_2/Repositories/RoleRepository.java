@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import java.util.List;
 
 @Repository
-@CrossOrigin(origins = "http://10.128.32.141:4200")
+@CrossOrigin(origins = "http://10.128.32.201:4200")
 public interface RoleRepository extends JpaRepository<Role,Integer> {
 
     @Override
@@ -21,6 +21,8 @@ public interface RoleRepository extends JpaRepository<Role,Integer> {
             "GROUP BY u.user_role_id " +
             "ORDER by u.user_role_id")
     public List<RoleUser> roleUsers();
+
+    public Role findByName(String RoleName);
 
 
 }

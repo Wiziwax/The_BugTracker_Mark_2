@@ -80,38 +80,15 @@
 
 
 
-
-                       <div class=" form-group">
+                      <div class=" form-group">
                           <label>Bug Treatment Stage</label>
                            <select th:field="${bug.bugTreatmentStage}">
                                <option th:value="OPEN">OPEN</option>
                                <option th:value="PENDING">PENDING</option>
                                <option th:value="CLOSED">CLOSED</option>
                            </select>
-                       </div>
+                      </div>
 
-
-<!--                        <div class=" form-group">-->
-<!--                          <label>PROGRESS STATUS</label>-->
-<!--                           <select th:field="${bug.progressStatus}">-->
-<!--                               <option th:value="APPROVED">APPROVED</option>-->
-<!--                               <option th:value="ASSIGNED">ASSIGNED</option>-->
-<!--                               <option th:value="REASSIGNED">REASSIGNED</option>-->
-<!--                               <option th:value="COMPLETED">COMPLETED</option>-->
-<!--                           </select>-->
-<!--                       </div>-->
-
-
-<!--                      <div class="form-group row">-->
-<!--                          <label class="col-sm-4 col-form-label">Platform:</label>-->
-<!--                          <div class="col-sm-8">-->
-<!--                              <select th:field ="${bug.platformses}" multiple="multiple"    style="width: 100%">-->
-<!--                                  <option th:each="platform: ${allPlatforms}"-->
-<!--                                          th:value="${platform.platformId}"-->
-<!--                                          th:text="${platform.platformName}"></option>-->
-<!--                              </select>-->
-<!--                          </div>-->
-<!--                      </div>-->
 
 
                       <div class="form-group row">

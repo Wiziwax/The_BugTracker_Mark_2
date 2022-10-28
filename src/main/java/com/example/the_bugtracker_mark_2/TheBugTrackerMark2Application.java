@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class TheBugTrackerMark2Application {
-
     public static void main(String[] args) {
         SpringApplication.run(TheBugTrackerMark2Application.class, args);
     }

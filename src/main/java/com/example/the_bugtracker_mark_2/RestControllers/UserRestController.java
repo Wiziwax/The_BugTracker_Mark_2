@@ -1,11 +1,13 @@
 package com.example.the_bugtracker_mark_2.RestControllers;
 
-
+import com.example.the_bugtracker_mark_2.Models.Bug;
 import com.example.the_bugtracker_mark_2.Models.Role;
 import com.example.the_bugtracker_mark_2.Models.User;
+import com.example.the_bugtracker_mark_2.Repositories.BugRepository;
 import com.example.the_bugtracker_mark_2.Repositories.UserRepository;
 import com.example.the_bugtracker_mark_2.Configs.ValueNotFoundException;
 import com.example.the_bugtracker_mark_2.Repositories.RoleRepository;
+import com.example.the_bugtracker_mark_2.Services.BugService;
 import com.example.the_bugtracker_mark_2.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +17,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/users")
-@CrossOrigin(origins = "http://10.128.32.141:4200")
+@CrossOrigin(origins = "http://10.128.32.201:4200")
 public class UserRestController {
 
     @Autowired
@@ -27,11 +29,11 @@ public class UserRestController {
     @Autowired
     UserRepository userRepository;
 
-//    @Autowired
-//    BugRepository bugRepository;
-//
-//    @Autowired
-//    BugService bugService;
+    @Autowired
+    BugRepository bugRepository;
+
+    @Autowired
+    BugService bugService;
 
     //DISPLAY ALL USERS
     @GetMapping("")
@@ -40,14 +42,14 @@ public class UserRestController {
     }
 
     //ROLE LIST
-    @GetMapping("roleList")
+    @GetMapping("rolelist")
     public List<Role> roleList() {
         return roleRepository.findAll();
     }
 
 
     //FIND USER BY ID
-    @GetMapping("findById")
+    @GetMapping("findbyid")
     public Optional<User> findUser(@RequestParam Integer id){
         return userService.getUserById(id);
     }
@@ -91,20 +93,21 @@ public class UserRestController {
     }
 
 
-//    @GetMapping("mydashboard/{id}")
-//    public List <Bug> myDashboard(@PathVariable Integer id) throws ValueNotFoundException {
-//        return bugService.getBugByUserId(id);
-//    }
+    @GetMapping("mydashboard/{id}")
+    public List <Bug> myDashboard(@PathVariable Integer id) throws ValueNotFoundException {
+        return bugService.getBugByUserId(id);
+    }
 
-//    @PutMapping("update/{userId}")
-//    public void updateUser(
-//            @PathVariable("userId") Integer userId,
-//            @RequestParam(required = false) String firstName,
-//            @RequestParam(required = false) String lastName,
-//            @RequestParam(required = false) String email
-//            ) {
-//            System.out.println();
-//        userService.updateUserRestController(userId, firstName, lastName, email);
-//    }
+    @PutMapping("update/{userId}")
+    public void updateUser(
+            @PathVariable("userId") Integer userId,
+            @RequestParam(required = false) String firstName,
+            @RequestParam(required = false) String lastName,
+            @RequestParam(required = false) String password,
+            @RequestParam(required = false) String email
+            ) {
+            System.out.println();
+        userService.updateUserRestController(userId, firstName, password, lastName, email);
+    }
 
 }

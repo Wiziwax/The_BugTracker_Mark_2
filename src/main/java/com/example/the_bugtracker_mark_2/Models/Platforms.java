@@ -1,9 +1,6 @@
 package com.example.the_bugtracker_mark_2.Models;
 
-
-
 import com.example.the_bugtracker_mark_2.Enums.PlatformStatus;
-
 import javax.persistence.*;
 
 @Entity
@@ -14,14 +11,17 @@ public class Platforms {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer platformId;
 
+    @Column
     private String platformName;
 
 
+    @Column
     private PlatformStatus platformStatus;
-
 
     public Platforms() {
     }
+
+
 
     public Platforms(String platformName) {
         this.platformName = platformName;
@@ -50,6 +50,7 @@ public class Platforms {
     public void setPlatformStatus(PlatformStatus platformStatus) {
         this.platformStatus = platformStatus;
     }
+
 
     @Override
     public String toString(){

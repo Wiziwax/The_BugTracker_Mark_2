@@ -1,18 +1,27 @@
 package com.example.the_bugtracker_mark_2.Controllers;
 
+import com.example.the_bugtracker_mark_2.Configs.SecurityUser;
 import com.example.the_bugtracker_mark_2.Configs.ValueNotFoundException;
 import com.example.the_bugtracker_mark_2.Models.Bug;
 import com.example.the_bugtracker_mark_2.Models.Role;
 import com.example.the_bugtracker_mark_2.Models.User;
+import com.example.the_bugtracker_mark_2.Repositories.UserRepository;
 import com.example.the_bugtracker_mark_2.Services.BugService;
+import com.example.the_bugtracker_mark_2.Services.PlatformService;
 import com.example.the_bugtracker_mark_2.Services.RoleService;
 import com.example.the_bugtracker_mark_2.Services.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -22,9 +31,18 @@ public class UserController {
     @Autowired
     UserService userService;
     @Autowired
+    UserRepository userRepository;
+
+    @Autowired
     RoleService roleService;
     @Autowired
     BugService bugService;
+
+    @Autowired
+    PlatformService platformService;
+
+
+
 
     @GetMapping("")
     public String displayUsers(Model model) {
@@ -41,16 +59,25 @@ public class UserController {
         model.addAttribute("allRoles", roleList);
         model.addAttribute("user", aUser);
         return "users/new-users";
-
     }
 
+
+
     @PostMapping("save")
-    public String createUserForm(User user, Model model) {
+    public String createUserForm(User user, @RequestParam("image") MultipartFile multipartFile)
+            throws IOException {
+
+//            String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+//            user.setPhotos(fileName);
+//            User savedUser = userRepository.save(user);
+//            String uploadDir = "user-photos/" + savedUser.getId();
+//            FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
         userService.save(user);
         return "redirect:/users/";
     }
 
     @GetMapping("edit/{id}")
+//    @PreAuthorize("#userId == principal.id")
     public String editUser(@PathVariable Integer id, Model model) throws ValueNotFoundException {
         User existingUser = userService.get(id);
         List<Role> roleList = roleService.listAllRoles();
@@ -106,17 +133,4 @@ public class UserController {
         model.addAttribute("developerbuglist", listBugByDeveloperAssigned);
         return "/users/individualreporttable";
     }
-
-
-//
-//    @GetMapping("usersubmittedcomplaints/{id}")
-//    public String userSubmittedBugComplaints(@PathVariable Integer id, @ModelAttribute("user")
-//                                             User user, Model model) throws ValueNotFoundException{
-//        List<Bug> listOfUserSubmittedBugs = bugService.getUserSubmittedBugs(id);
-//        model.addAttribute("userbuglist", listOfUserSubmittedBugs);
-//        return "/users/usersubmittedbugs";
-//    }
-
-
-
 }

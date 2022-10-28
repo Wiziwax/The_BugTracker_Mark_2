@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-@CrossOrigin(origins = "http://10.128.32.141:4200")
+@CrossOrigin(origins = "http://10.128.32.201:4200")
 public interface UserRepository extends CrudRepository<User, Integer> {
 
     @Override
@@ -28,7 +28,25 @@ public interface UserRepository extends CrudRepository<User, Integer> {
 
     Optional<User> findUserByEmail(String email);
 
-    List<User> findByEmail(String email);
 
-    User getByEmail(String userEmail);
+
+//    @Query(nativeQuery = true, value = "SELECT * FROM users u WHERE u.email=:email  AND u.password=:password")
+//    public User ifUserExists(String email, String password);
+
+    public User findByEmailAndPassword(String email, String password);
+
+
+    public User getByEmail(String userEmail);
+
+    boolean existsByEmail(String email);
+
+    @Query(nativeQuery = true, value = "SELECT * FROM USERS u WHERE u.user_team_id=:teamId")
+    public List<User> getUsersByUserTeam(int teamId);
+
+    public User findByEmail(String email);
+    public User findByPassword(String password);
+
+
+    public User findByResetPasswordToken(String token);
+
 }

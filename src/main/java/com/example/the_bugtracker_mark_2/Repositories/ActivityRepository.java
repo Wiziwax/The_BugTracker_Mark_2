@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://10.128.32.141:4200")
 @Repository
+@CrossOrigin(origins = "http://10.128.32.201:4200")
 public interface ActivityRepository extends JpaRepository<Activity, Integer> {
 
 

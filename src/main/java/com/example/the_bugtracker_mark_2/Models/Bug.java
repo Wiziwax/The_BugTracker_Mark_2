@@ -10,7 +10,6 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
 
-
 @Entity
 @Table(name = "bug_information")
 @EnableJpaAuditing
@@ -26,9 +25,9 @@ public class Bug {
     @CreatedDate
     @JsonIgnore
     public LocalDate lastUpdate;
+
     @OneToOne
     @JoinColumn(name = "user_bug_id")
-
     public User userAssignedToBug;
     @Id
     @Column(name = "bug_id")
@@ -36,8 +35,9 @@ public class Bug {
     private Integer bugId; //ID OF BUG
     @Column(name = "bug_name", nullable = false)
     private String label; //BUG NAME
-    @Column(name = "created_by")
-    private String createdBy;
+
+    @Column
+    private Integer createdBy;
     @Column(name = "approved_by")
     @JsonIgnore
     private String approvedBy;
@@ -51,7 +51,6 @@ public class Bug {
     private String severity; //SEVERITY LEVEL
     @Column
     private Severity enumSeverity;
-
     @Column
     private boolean assigned;
 
@@ -60,6 +59,7 @@ public class Bug {
 
     @Column
     private String bugTreatmentStage; //ALL BUGS, OPEN BUGS, TREATED, PENDING
+
     @Column
     private String progressStatus;//INITIATED, APPROVED, ASSIGNED TO, REASSIGNED TO, CORRECTION COMPLETED
 
@@ -89,7 +89,7 @@ public class Bug {
         this.label = bugName;
     }
 
-    public String getCreatedBy(String bugName) {
+    public Integer getCreatedBy(String bugName) {
         return createdBy;
     }
 
@@ -176,11 +176,11 @@ public class Bug {
         this.platformses = platformses;
     }
 
-    public String getCreatedBy() {
+    public Integer getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(String createdBy) {
+    public void setCreatedBy(Integer createdBy) {
         this.createdBy = createdBy;
     }
 
@@ -203,7 +203,26 @@ public class Bug {
 
     @Override
     public String toString() {
-        return label;
+        return "Bug{" +
+                "reportDate=" + reportDate +
+                ", assignedTo='" + assignedTo + '\'' +
+                ", lastUpdate=" + lastUpdate +
+                ", userAssignedToBug=" + userAssignedToBug +
+                ", bugId=" + bugId +
+                ", label='" + label + '\'' +
+                ", createdBy='" + createdBy + '\'' +
+                ", approvedBy='" + approvedBy + '\'' +
+                ", approvedDate=" + approvedDate +
+                ", assignedDate='" + assignedDate + '\'' +
+                ", severity='" + severity + '\'' +
+                ", enumSeverity=" + enumSeverity +
+                ", assigned=" + assigned +
+                ", ticketId='" + ticketId + '\'' +
+                ", bugTreatmentStage='" + bugTreatmentStage + '\'' +
+                ", progressStatus='" + progressStatus + '\'' +
+                ", bugReview='" + bugReview + '\'' +
+                ", platformses=" + platformses +
+                '}';
     }
 
     public String getTicketId() {
